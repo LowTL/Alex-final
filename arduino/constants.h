@@ -42,7 +42,6 @@ typedef enum
   COMMAND_GET_STATS = 5,
   COMMAND_CLEAR_STATS = 6,
   COMMAND_SENSE_COLOR = 7,
-  COMMAND_FORWARD_2 = 8,
 } TCommandType;
 #endif
 

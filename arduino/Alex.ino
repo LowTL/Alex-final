@@ -701,12 +701,7 @@ void handleCommand(TPacket *command)
         sendOK();
         senseColor();
       break;
-    case COMMAND_FORWARD_2:
-      sendOK();
-      newForward((float) command->params[0], (float) command->params[1]);
-      break;      
-      
-     default:
+    default:
       sendBadCommand();
   }
 }
@@ -737,7 +732,7 @@ void waitForHello()
       else
         sendBadResponse();
     }
-    else
+   else
       if(result == PACKET_BAD)
       {
         sendBadPacket();

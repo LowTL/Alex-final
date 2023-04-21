@@ -186,7 +186,7 @@ void sendCommand(char command)
 		case 'f':
 		case 'F':
 			getParams(&commandPacket);
-			commandPacket.command = COMMAND_FORWARD_2;
+			commandPacket.command = COMMAND_FORWARD;
 			sendPacket(&commandPacket);
 			break;
 		case 'w':
