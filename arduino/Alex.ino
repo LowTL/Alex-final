@@ -147,19 +147,12 @@ void senseColor() {
   char *color;
   if (redF < 200 && greenF > 200) {
     color = "red";
-    sendColor(color);
   } else if (greenF < 200 && redF > 200) {
     color = "green";
-    sendColor(color);
-    sendColor(color);
   } else {
     color = "retry";
-    sendColor(color);
-    sendColor(color);
-    sendColor(color);
   }
-  
-
+  sendColor(color);
 
 }
 
@@ -361,8 +354,6 @@ ISR(INT1_vect){
   rightISR();
 }
 
-
-
 // Implement INT0 and INT1 ISRs above.
 
 /*
@@ -478,12 +469,12 @@ int pwmVal(float speed)
 
 void forward(float dist, float speed)
 {
-  /*if(dist == 0){
+  if(dist == 0){
     deltaDist = 999999;
   }else{
     deltaDist = dist;
   }
-  newDist = forwardDist + deltaDist;*/
+  newDist = forwardDist + deltaDist;
   dir = FORWARD;
   int val = pwmVal(speed);
 //  analogWrite(LF, val);
@@ -498,42 +489,16 @@ void forward(float dist, float speed)
   OCR0B = val;
   // Right Reverse
   OCR2A = val * 0.8;
-  delay(200);
-  stop();
-  
 }
 
-void newForward(float dist, float velo) {
+void reverse(float dist, float speed)
+{
   if(dist == 0){
     deltaDist = 999999;
   }else{
     deltaDist = dist;
   }
-  newDist = forwardDist + deltaDist;
-  dir = FORWARD;
-  int val = pwmVal(velo);
-//  analogWrite(LF, val);
-//  analogWrite(RF, val);
-//  analogWrite(LR,0);
-//  analogWrite(RR, 0);
-  // Left Forward
-  OCR0A = 0;
-  // Right Forward
-  OCR1B = 0;
-  // Left Reverse
-  OCR0B = val;
-  // Right Reverse
-  OCR2A = val;
-}
-
-void reverse(float dist, float speed)
-{
-  /*if(dist == 0){
-    deltaDist = 999999;
-  }else{
-    deltaDist = dist;
-  }
-  newDist = reverseDist + deltaDist;*/
+  newDist = reverseDist + deltaDist;
   dir = BACKWARD;
   int val = pwmVal(speed);
 //  analogWrite(LR, val);
@@ -549,8 +514,6 @@ void reverse(float dist, float speed)
   OCR0B = 0;
   // Right Reverse
   OCR2A = 0;
-  delay(200);
-  stop();
 }
 
 unsigned long computeDeltaTicks(float ang){
@@ -565,14 +528,13 @@ unsigned long computeDeltaTicks(float ang){
 // turn left indefinitely.
 void left(float ang, float speed)
 {
-  ang /= 2;
   dir = LEFT;
-  /*if(ang == 0){
+  if(ang == 0){
     deltaTicks = 99999999;
   }else{
     deltaTicks = computeDeltaTicks(ang);
   }
-  targetTicks = leftReverseTicksTurns + deltaTicks;*/
+  targetTicks = leftReverseTicksTurns + deltaTicks;
   int val = pwmVal(speed);
 //  analogWrite(LR, val);
 //  analogWrite(RF, val);
@@ -587,8 +549,6 @@ void left(float ang, float speed)
   OCR0B = val;
   // Right Reverse
   OCR2A = 0;
-  delay(200);
-  stop();
 }
 
 // Turn Alex right "ang" degrees at speed "speed".
@@ -598,14 +558,13 @@ void left(float ang, float speed)
 // turn right indefinitely.
 void right(float ang, float speed)
 {
-  ang /= 3;
   dir = RIGHT;
-  /*if(ang == 0){
+  if(ang == 0){
     deltaTicks = 99999999;
   }else{
     deltaTicks = computeDeltaTicks(ang);
   }
-  targetTicks = rightReverseTicksTurns + deltaTicks;*/
+  targetTicks = rightReverseTicksTurns + deltaTicks;
   int val = pwmVal(speed);
 //  analogWrite(RR, val);
 //  analogWrite(LF, val);
@@ -619,9 +578,6 @@ void right(float ang, float speed)
   OCR0B = 0;
   // Right Reverse
   OCR2A = val;
-  delay(200);
-  stop();
-  
 }
 
 // Stop Alex. To replace with bare-metal code later.
@@ -872,12 +828,12 @@ void loop() {
     else 
     if (dir == BACKWARD) 
     {
-    /*  if (reverseDist > newDist) 
+      if (reverseDist > newDist) 
       {
         deltaDist = 0;
         newDist = 0;
         stop();
-      }*/
+      }
     }
     else
       if (dir==STOP)
@@ -889,18 +845,18 @@ void loop() {
   }
   if(deltaTicks > 0){
     if(dir == LEFT){
-      /*if(leftReverseTicksTurns >= targetTicks){
+      if(leftReverseTicksTurns >= targetTicks){
         deltaTicks = 0;
         targetTicks = 0; 
         stop();
-      }*/
+      }
     }else
       if(dir == RIGHT){
-        /*if(rightReverseTicksTurns >= targetTicks){
+        if(rightReverseTicksTurns >= targetTicks){
         deltaTicks = 0;
         targetTicks = 0; 
         stop();
-      }*/
+      }
     }else
       if(dir == STOP){
         deltaTicks = 0;
